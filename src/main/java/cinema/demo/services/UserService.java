@@ -1,41 +1,47 @@
 package cinema.demo.services;
 
 import cinema.demo.api.model.User;
+import cinema.demo.repository.UserRepo;
 import org.springframework.stereotype.Service;
 
-import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
 
 @Service
 public class UserService {
-    private List<User> userList;
+    private final UserRepo userRepo;
 
-    public UserService() {
-        userList = new ArrayList<>();
-
-        User user1 = new User(1,"Ida",  "ida@mail.com");
-        User user2 = new User(2,"Hans",  "hans@mail.com");
-        User user3 = new User(3,"Lars",  "lars@mail.com");
-        User user4 = new User(4,"Ben",  "ben@mail.com");
-        User user5 = new User(5,"Eva",  "eva@mail.com");
-
-        userList.addAll(Arrays.asList(user1,user2,user3,user4,user5));
+    public UserService(UserRepo userRepo) {
+        this.userRepo = userRepo;
     }
 
     public List<User> getAllUsers(){
-        return userList;
+        return userRepo.findAll();
     }
 
     public Optional<User> getUser(Integer id) {
-        Optional<User> optional = Optional.empty();
-        for (User user: userList) {
-            if(id == user.getId()){
-                optional = Optional.of(user);
-                return optional;
-            }
+        Optional<User> optionalUser = userRepo.findById(id);
+        if(optionalUser.isPresent()){
+            return optionalUser;
         }
-        return optional;
+        System.out.println("Employee with id: {} doesn't exist" + id);
+
+        return Optional.empty();
+    }
+
+    public User saveUser (User user){
+        User savedEmployee = userRepo.save(user);
+
+        System.out.println("Employee with id: {} saved successfully" + user.getId());
+        return savedEmployee;
+    }
+
+    public User addUser(User user){
+        Optional<User> existingEmployee = userRepo.findById(user.getId());
+
+        User updatedEmployee = userRepo.save(user);
+
+        System.out.println("Employee with id: {} updated successfully" +  user.getId());
+        return updatedEmployee;
     }
 }
