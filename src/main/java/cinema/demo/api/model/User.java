@@ -1,14 +1,23 @@
 package cinema.demo.api.model;
 
+import jakarta.persistence.*;
+
+@Entity
+@Table(name = "users")
 public class User {
+    @Id
+    @GeneratedValue(strategy = GenerationType.AUTO)
     private int id;
     private String name;
     private String email;
+    private String password;
 
-    public User(int id, String name, String email){
-        this.id = id;
+    public User(){}
+
+    public User(String name, String email, String password){
         this.name = name;
         this.email = email;
+        this.password = password;
     }
 
     public int getId(){
@@ -32,6 +41,10 @@ public class User {
 
     public String setEmail(String email){
         return this.email = email;
+    }
+
+    public String getPassword(){
+        return password;
     }
 
 }
