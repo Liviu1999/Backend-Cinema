@@ -29,19 +29,24 @@ public class UserService {
         return Optional.empty();
     }
 
-    public User saveUser (User user){
+    public User addUser (User user){
         User savedEmployee = userRepo.save(user);
-
-        System.out.println("Employee with id: {} saved successfully" + user.getId());
+        System.out.println("Employee with id: {" + user.getId() + "} saved successfully");
         return savedEmployee;
     }
 
-    public User addUser(User user){
+    /*public void registerUser(String nickname, String email, String password) {
+        String encryptedPassword = passwordEncoder.encode(password);
+        User user = new User(nickname, email, encryptedPassword);
+        saveUser(user);
+    }*/
+
+    /*public User addUser(User user){
         Optional<User> existingEmployee = userRepo.findById(user.getId());
 
         User updatedEmployee = userRepo.save(user);
 
         System.out.println("Employee with id: {} updated successfully" +  user.getId());
         return updatedEmployee;
-    }
+    }*/
 }
